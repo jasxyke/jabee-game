@@ -1,7 +1,7 @@
 const FLOOR_HEIGHT = 48;
-const JUMP_FORCE = 800;
+const JUMP_FORCE = 700;
 const SPEED = 700;
-const TIME_INTERVAL = 0.2;
+const TIME_INTERVAL = 0.3;
 
 let score = 0;
 
@@ -88,12 +88,22 @@ function addGameEventListeners(jabee) {
 
   jabee.onCollide("tree", () => {
     addKaboom(jabee.pos);
+    destroy(jabee);
     go("lose");
   });
 }
 
+function addBackground() {
+  add([
+    sprite("jabee-store", { width: width(), height: height() }), // Stretch to fit screen
+    pos(0, 0),
+    fixed(),
+  ]);
+}
+
 function createGame() {
   setGravity(1600);
+  addBackground();
   generatePlatform();
   const jabee = spawnJabee();
   spawnTree();
@@ -105,8 +115,10 @@ window.addEventListener("load", () => {
   kaboom({
     background: [0, 0, 255],
   });
+  // kaboom();
   // load a sprite "jollibee" from an image
   loadSprite("jabee", "sprites/jollibee.png");
+  loadSprite("jabee-store", "sprites/jabee-store.jpg");
 
   scene("game", () => {
     createGame();
