@@ -2,6 +2,9 @@ const FLOOR_HEIGHT = 48;
 const JUMP_FORCE = 700;
 const SPEED = 700;
 const TIME_INTERVAL = 0.3;
+const JABEE_SPEED = 10;
+
+var JABEE_WIDTH;
 
 let score = 0;
 
@@ -91,6 +94,32 @@ function addGameEventListeners(jabee) {
     destroy(jabee);
     go("lose");
   });
+
+  const JABEE_WIDTH = jabee.width;
+
+  onUpdate(() => {
+    const left = isKeyDown("a");
+    const right = isKeyDown("d");
+    const down = isKeyDown("s");
+    const up = isKeyDown("w");
+
+    if (left) {
+      // if (jabee.pos.x < 0) jabee.pos.x = 0;
+      if (!(jabee.pos.x - JABEE_SPEED < 0)) {
+        jabee.pos.x -= JABEE_SPEED;
+      }
+    } else if (right) {
+      jabee.pos.x += JABEE_SPEED;
+    }
+    // else if (down) {
+    //   jabee.pos.y -= JABEE_SPEED;
+    // } else if (right) {
+    //   jabee.pos.y += JABEE_SPEED;
+    // }
+    else {
+      console.log("IDLE");
+    }
+  });
 }
 
 function addBackground() {
@@ -126,7 +155,8 @@ window.addEventListener("load", () => {
 
   scene("lose", () => {
     shake();
-    burp();
+    // burp();
+    addBackground();
     add([
       sprite("jabee"),
       pos(width() / 2, height() / 2 - 80),
